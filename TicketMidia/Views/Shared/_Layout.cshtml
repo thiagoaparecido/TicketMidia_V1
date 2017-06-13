@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+@using System.Configuration;
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCB ANCINE TicketMidia</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        img {
+            float: initial;
+            margin: 10px 0 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("SCB TKMidia", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Rendas", "Index", "BILHETERIA")</li>
+                    <li>@Html.ActionLink("Envio Ancine", "SendReceive", "BILHETERIA")</li>
+                    <li>@Html.ActionLink("Acompanhar Envios", "IndexStatus", "BILHETERIA")</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" role="button" aria-expanded="false" href="#" data-toggle="dropdown">Cadastros <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Obras (Filmes)" ,"Index" ,"TB_FILME")</li>
+                            <li>@Html.ActionLink("Distribuidoras", "Index", "TB_DISTRIBUIDORA")</li>
+                            <li>@Html.ActionLink("Vendedor Remoto" ,"Index" ,"TB_VENDEDOR_REMOTO")</li>
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                        @{ string str_SCB_Client_Name = ConfigurationManager.AppSettings["SCB_Client_Name"];}
+                    <li>@Html.ActionLink(str_SCB_Client_Name ,"Index" ,"Home" ,routeValues: null ,htmlAttributes: new { id = "CLIENT" })</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div id="processando" hidden="hidden" style="text-align:center"><img id="imagemProcessando" src="~/Images/loader8.gif" class="img" style="width:50px; height:50px"/></div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; SCB TicketMidia - Envio de Rendas ANCINE V1 - Maio/17.</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        for (i = 0; i < document.forms.length; i++) {
+            var objForm = document.forms[i];
+            $(objForm).on("submit", function () {
+                $('#processando').css({ display: 'block' });
+            })
+        }
+    });
+
+</script>

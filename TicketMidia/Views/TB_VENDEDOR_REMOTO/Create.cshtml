@@ -1,0 +1,54 @@
+﻿@model TicketMidia.Models.TB_VENDEDOR_REMOTO
+
+<h3>Novo Vendedor Remoto</h3>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Exibidor</label>
+            <div class="col-md-10">
+                @Html.DropDownList("EMP_CD_ANCINE" ,null ,htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.EMP_CD_ANCINE ,"" ,new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">CNPJ</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.VRE_CNPJ, new { htmlAttributes = new { @class = "form-control" } })
+                @*@Html.ValidationMessageFor(model => model.VRE_CNPJ, "", new { @class = "text-danger" })*@
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2">Vendedor Remoto</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.VRE_RZ_SOCIAL, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.VRE_RZ_SOCIAL, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10" style="text-align:right">
+                <a href="/TB_VENDEDOR_REMOTO" class="btn btn-default btn-md" role="button">Voltar</a>
+                <input type="submit" value="Salvar" id="Salvar" class="btn btn-success btn-md" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('#VRE_CNPJ').mask('00.000.000/0000-00');
+    });
+</script>
+}

@@ -1,0 +1,42 @@
+﻿@model TicketMidia.Models.TB_TOT_TP_ASSENTO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TB_TOT_TP_ASSENTO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TTA_TP_ASSENTO)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TTA_TP_ASSENTO)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TTA_QTD_DISP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TTA_QTD_DISP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TB_SESSAO_ANCINE.SAL_CD_ANCINE)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TB_SESSAO_ANCINE.SAL_CD_ANCINE)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TTA_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

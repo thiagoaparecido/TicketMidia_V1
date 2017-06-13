@@ -1,0 +1,927 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
+using TicketMidia.Models;
+using System.Data.Entity;
+using SCBIntegration.Entities;
+using System.Configuration;
+using SCBIntegration;
+
+namespace TicketMidia.Controllers
+{
+    public class BilheteriaController : Controller
+    {
+        private TicketMidiaEntities db = new TicketMidiaEntities();
+        List<MensagensANCINE> model = new List<MensagensANCINE>();
+
+
+        public ActionResult Index()
+        {
+            var listaBil = (from b in db.TB_BILHETERIA
+                            join s in db.TB_SESSAO_ANCINE on b.BIL_ID equals s.BIL_ID
+                            //where b.BIL_PROT == ""
+                            orderby b.BIL_DIA_CIN
+
+                            select new MensagensANCINE()
+                            {
+
+                                BIL_ID = b.BIL_ID,
+                                BIL_DIA_CIN = b.BIL_DIA_CIN,
+                                SAL_CD_ANCINE = b.SAL_CD_ANCINE,
+                                BIL_HOUVE_SES = b.BIL_HOUVE_SES,
+                                BIL_ADIMP_SALA = b.BIL_ADIMP_SALA,
+                                BIL_PROT = b.BIL_PROT,
+                                BIL_RETIF = b.BIL_RETIF,
+                                EMP_CD_ANCINE = b.EMP_CD_ANCINE,
+                                FIL_CD_ANCINE = s.FIL_CD_ANCINE,
+                                SEA_DIS_CNPJ = s.SEA_DIS_CNPJ,
+                                SEA_DIS_NM = s.SEA_DIS_NM,
+                                SEA_DT_HR_INICIO = s.SEA_DT_HR_INICIO,
+                                SEA_FIL_NM = s.SEA_FIL_NM,
+                                SEA_FIL_TP_PROJECAO = s.SEA_FIL_TP_PROJECAO,
+                                SEA_MODAL = s.SEA_MODAL,
+                                SEA_RZ_SOCIAL = s.SEA_RZ_SOCIAL,
+                                SEA_VRE_CNPJ = s.SEA_VRE_CNPJ
+
+                            });
+
+            foreach (var item in listaBil)
+            {
+                model.Add(new MensagensANCINE()
+                {
+                    BIL_ID = item.BIL_ID,
+                    BIL_DIA_CIN = item.BIL_DIA_CIN,
+                    SAL_CD_ANCINE = item.SAL_CD_ANCINE,
+                    BIL_HOUVE_SES = item.BIL_HOUVE_SES,
+                    BIL_ADIMP_SALA = item.BIL_ADIMP_SALA,
+                    BIL_PROT = item.BIL_PROT,
+                    BIL_RETIF = item.BIL_RETIF,
+                    EMP_CD_ANCINE = item.EMP_CD_ANCINE,
+                    FIL_CD_ANCINE = item.FIL_CD_ANCINE,
+                    SEA_DIS_CNPJ = item.SEA_DIS_CNPJ,
+                    SEA_DIS_NM = item.SEA_DIS_NM,
+                    SEA_DT_HR_INICIO = item.SEA_DT_HR_INICIO,
+                    SEA_FIL_NM = item.SEA_FIL_NM,
+                    SEA_FIL_TP_PROJECAO = item.SEA_FIL_TP_PROJECAO,
+                    SEA_MODAL = item.SEA_MODAL,
+                    SEA_RZ_SOCIAL = item.SEA_RZ_SOCIAL,
+                    SEA_VRE_CNPJ = item.SEA_VRE_CNPJ
+                });
+            }
+
+
+            //db.TB_BILHETERIA.Include(a => a.TB_EMPRESA_COMPLEXO).Include(b => b.TB_SALA).Include(c => c.TB_SESSAO_ANCINE);
+
+            return View(listaBil.ToList());
+        }
+
+        public ActionResult SendReceive()
+        {
+
+            var listaBil = (from b in db.TB_BILHETERIA
+                            group b by b.BIL_DIA_CIN into pg
+                            where pg.FirstOrDefault().BIL_PROT == "" || pg.FirstOrDefault().BIL_PROT == "N"
+                            select new MensagensANCINE()
+                            {
+                                BIL_ID = pg.FirstOrDefault().BIL_ID,
+                                BIL_DIA_CIN = pg.FirstOrDefault().BIL_DIA_CIN,
+                                SAL_CD_ANCINE = pg.FirstOrDefault().SAL_CD_ANCINE,
+                                BIL_HOUVE_SES = pg.FirstOrDefault().BIL_HOUVE_SES,
+                                BIL_ADIMP_SALA = pg.FirstOrDefault().BIL_ADIMP_SALA,
+                                BIL_PROT = pg.FirstOrDefault().BIL_PROT,
+                                BIL_RETIF = pg.FirstOrDefault().BIL_RETIF,
+                                EMP_CD_ANCINE = pg.FirstOrDefault().EMP_CD_ANCINE
+                            });
+
+            //var listaBil = (from b in db.TB_BILHETERIA
+            //                group b by b.BIL_DIA_CIN into pg
+            //                join s in db.TB_SESSAO_ANCINE on pg.FirstOrDefault().BIL_ID equals s.BIL_ID
+            //                where pg.FirstOrDefault().BIL_PROT == "" || pg.FirstOrDefault().BIL_PROT == "N"
+            //                select new MensagensANCINE()
+            //                {
+            //                    BIL_ID = pg.FirstOrDefault().BIL_ID,
+            //                    BIL_DIA_CIN = pg.FirstOrDefault().BIL_DIA_CIN,
+            //                    SAL_CD_ANCINE = pg.FirstOrDefault().SAL_CD_ANCINE,
+            //                    BIL_HOUVE_SES = pg.FirstOrDefault().BIL_HOUVE_SES,
+            //                    BIL_ADIMP_SALA = pg.FirstOrDefault().BIL_ADIMP_SALA,
+            //                    BIL_PROT = pg.FirstOrDefault().BIL_PROT,
+            //                    BIL_RETIF = pg.FirstOrDefault().BIL_RETIF,
+            //                    EMP_CD_ANCINE = pg.FirstOrDefault().EMP_CD_ANCINE,
+            //                    FIL_CD_ANCINE = s.FIL_CD_ANCINE,
+            //                    SEA_DIS_CNPJ = s.SEA_DIS_CNPJ,
+            //                    SEA_DIS_NM = s.SEA_DIS_NM,
+            //                    SEA_DT_HR_INICIO = s.SEA_DT_HR_INICIO,
+            //                    SEA_FIL_NM = s.SEA_FIL_NM,
+            //                    SEA_FIL_TP_PROJECAO = s.SEA_FIL_TP_PROJECAO,
+            //                    SEA_MODAL = s.SEA_MODAL,
+            //                    SEA_RZ_SOCIAL = s.SEA_RZ_SOCIAL,
+            //                    SEA_VRE_CNPJ = s.SEA_VRE_CNPJ
+            //                });
+
+            foreach (var item in listaBil)
+            {
+                model.Add(new MensagensANCINE()
+                {
+                    BIL_ID = item.BIL_ID,
+                    BIL_DIA_CIN = item.BIL_DIA_CIN,
+                    SAL_CD_ANCINE = item.SAL_CD_ANCINE,
+                    BIL_HOUVE_SES = item.BIL_HOUVE_SES,
+                    BIL_ADIMP_SALA = item.BIL_ADIMP_SALA,
+                    BIL_PROT = item.BIL_PROT,
+                    BIL_RETIF = item.BIL_RETIF,
+                    EMP_CD_ANCINE = item.EMP_CD_ANCINE
+                });
+            }
+            return View(listaBil.ToList());
+        }
+
+        public ActionResult Send(DateTime BIL_DIA_CIN)
+        {
+            Bilheteria objBilheteria = new Bilheteria();
+
+            
+            var listaBil = db.TB_BILHETERIA.Where(b => b.BIL_DIA_CIN == BIL_DIA_CIN && b.BIL_PROT == "" || b.BIL_PROT == "N").FirstOrDefault();
+
+            //var TB_BILHETERIA listaBil = db.TB_BILHETERIA.SqlQuery("SELECT * FROM TB_BILHETERIA WHERE BIL_DIA_CIN = '" + BIL_DIA_CIN + "' AND BIL_PROT = '' OR BIL_PROT = 'N'").ToArray();
+
+
+            objBilheteria.registroANCINEExibidor = Convert.ToUInt16(listaBil.EMP_CD_ANCINE);
+            objBilheteria.registroANCINESala = Convert.ToUInt16(listaBil.SAL_CD_ANCINE);
+            objBilheteria.diaCinematografico = listaBil.BIL_DIA_CIN;
+            objBilheteria.houveSessoes = listaBil.BIL_HOUVE_SES;
+            objBilheteria.retificador = listaBil.BIL_RETIF;
+
+            List<Sessao> listaSessoes = new List<Sessao>();
+
+            if (listaSessoes != null)
+            {
+                // ---------------------------------------------------------------
+                // 1.a.i - SESSAO 1
+                // ---------------------------------------------------------------
+
+                var listaSes = db.TB_SESSAO_ANCINE.Where(s => s.BIL_ID == listaBil.BIL_ID).FirstOrDefault();
+
+                Sessao sessao1 = new Sessao();
+                //sessao1.dataHoraInicio = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); //2017-03-31 21:00:00
+                sessao1.dataHoraInicio = listaSes.SEA_DT_HR_INICIO.ToString();
+                sessao1.modalidade = listaSes.SEA_MODAL;
+                sessao1.vendedorRemoto = new VendedorRemoto();
+
+                // -----------------------------------------------------
+                // SESSAO 1 - INICIALIZA LISTA DE OBRAS DA SESSAO 1
+                // -----------------------------------------------------
+                List<Obra> listaObrasSessao1 = new List<Obra>();
+
+                if (listaObrasSessao1 != null)
+                {
+                    // ------------------------------------
+                    // OBRA 1 DA SESSAO 1
+                    // ------------------------------------
+                    Obra obra1_da_sessao1 = new Obra();
+                    obra1_da_sessao1.numeroObra = listaSes.FIL_CD_ANCINE;
+                    obra1_da_sessao1.tituloObra = listaSes.SEA_FIL_NM;
+                    obra1_da_sessao1.tipoTela = listaSes.SEA_FIL_TP_TELA;
+                    obra1_da_sessao1.digital = listaSes.SEA_FIL_DIGITAL;
+                    obra1_da_sessao1.tipoProjecao = Convert.ToUInt16(listaSes.SEA_FIL_TP_PROJECAO);
+                    obra1_da_sessao1.audio = listaSes.SEA_FIL_AUDIO;
+                    obra1_da_sessao1.legenda = listaSes.SEA_FIL_LEG;
+                    obra1_da_sessao1.libras = listaSes.SEA_FIL_PRO_LIBRA;
+                    obra1_da_sessao1.legendagemDescritiva = listaSes.SEA_FIL_LEG_DESC_CC;
+                    obra1_da_sessao1.audioDescricao = listaSes.SEA_FIL_AUDIO_DESC;
+
+                    // DISTRIBUIDOR DA OBRA 1
+                    obra1_da_sessao1.distribuidor = new Distribuidor();
+                    obra1_da_sessao1.distribuidor.cnpj = Convert.ToUInt16(listaSes.SEA_DIS_CNPJ);
+                    obra1_da_sessao1.distribuidor.razaoSocial = listaSes.SEA_DIS_NM;
+
+                    // -----------------------------------------------------
+                    // ADICIONA A OBRA 1 DENTRO DA LISTA DE OBRAS DA SESSAO 1                        
+                    listaObrasSessao1.Add(obra1_da_sessao1);
+                    // -----------------------------------------------------
+
+                }
+
+                // PREENCHE O ARRAY DE OBRAS DENTRO DA SESSAO 1
+                sessao1.obras = listaObrasSessao1.ToArray();
+
+
+                // -----------------------------------------------------
+                // SESSAO 1 - ADICIONA OS DADOS DE TOTALIZAÇÃO PARA A SESSÃO 1
+                // -----------------------------------------------------
+                sessao1.totalizacoesTipoAssento = new TotalizacaoTipoAssento[] {
+
+                    // ------------------------------------
+                    // TOTALIZACAO TIPO ASSENTO "P"
+                    // ------------------------------------
+                    new TotalizacaoTipoAssento
+                    {
+                        codigoTipoAssento = "P",
+                        quantidadeDisponibilizada = 236,
+                        totalizacoesCategoriaIngresso = new TotalizacaoCategoriaIngresso[]
+                        {
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 1,
+                                quantidadeEspectadores = 85,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 1120
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 70
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 2,
+                                quantidadeEspectadores = 102,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 1400
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 28
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 3,
+                                quantidadeEspectadores = 0,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 4,
+                                quantidadeEspectadores = 0,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            }
+                        }
+                    },
+
+                    // ------------------------------------
+                    // TOTALIZACAO TIPO ASSENTO "E"
+                    // ------------------------------------
+                    new TotalizacaoTipoAssento
+                    {
+                        codigoTipoAssento = "E",
+                        quantidadeDisponibilizada = 4,
+                        totalizacoesCategoriaIngresso = new TotalizacaoCategoriaIngresso[]
+                        {
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 1,
+                                quantidadeEspectadores = 1,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 8
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 2,
+                                quantidadeEspectadores = 0,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 3,
+                                quantidadeEspectadores = 0,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            },
+
+                            new TotalizacaoCategoriaIngresso
+                            {
+                                codigoCategoriaIngresso = 4,
+                                quantidadeEspectadores = 0,
+                                totalizacoesModalidadePagamento = new TotalizacaoModalidadePagamento[]
+                                {
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 1,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 2,
+                                        valorArrecadado = 0
+                                    },
+
+                                    new TotalizacaoModalidadePagamento
+                                    {
+                                        codigoModalidadePagamento = 3,
+                                        valorArrecadado = 0
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                };
+
+
+                // ADICIONA NA LISTA DE SESSOES
+                listaSessoes.Add(sessao1);
+            }
+
+            // PREENCHE O ARRAY DE SESSOES
+            objBilheteria.sessoes = listaSessoes.ToArray();
+
+            // BUSCA OS PARAMETROS NO APP.CONFIG, ou DEPOIS PODE BUSCAR EM ALGUMA TABELA DE PARAMETROS GLOBAIS
+            string str_SCB_URL_Endpoint = ConfigurationManager.AppSettings["SCB_URL_Endpoint"];
+            string str_SCB_AuthorizationToken = ConfigurationManager.AppSettings["SCB_AuthorizationToken"];
+
+            // AQUI VOCÊ INSTANCIA O OBJETO 'MANAGER' DO SERVIÇO, PARA DEPOIS CHAMAR O MÉTODO DESEJADO
+            // - VOCÊ JÁ TEM QUE ENVIAR A URL E O TOKEN
+            SCBIntegrationManager objSCBIntegrationManager = new SCBIntegrationManager(str_SCB_URL_Endpoint, str_SCB_AuthorizationToken);
+
+            try
+            {
+                // AQUI VOCÊ CHAMA O MÉTODO, PASSANDO COMO PARAMETRO O OBJETO 'BILHETERIA' JÁ PREENCHIDO
+                StatusRelatorioBilheteria objReturn = objSCBIntegrationManager.RegistroBilheteriaSalaExibicao(objBilheteria);
+
+                // VALIDA SE O RETORNO NÃO É NULO
+                if (objReturn != null)
+                {
+                    // EXIBE POSSIVEIS MENSAGENS DE RETORNO: I - Informativa; A - Alerta; E - Erro
+                    if (objReturn.mensagens != null && objReturn.mensagens.Count() > 0)
+                    {
+                        foreach (var msg in objReturn.mensagens)
+                        {
+                            // AQUI VOCÊ DEVE TRATAR AS MENSAGENS DE RETORNO CONFORME SUA NECESSIDADE
+                            // - OBS: Campo "tipoMensagem" = Código que especifica o tipo da mensagem. Sendo: I - Informativa; A - Alerta; E - Erro
+                            if (msg.tipoMensagem == "I")
+                            {
+                                //MessageBox.Show(msg.textoMensagem, "Informativo: " + msg.codigoMensagem, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                            else if (msg.tipoMensagem == "A")
+                            {
+                                //MessageBox.Show(msg.textoMensagem, "Alerta: " + msg.codigoMensagem, MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            }
+                            else if (msg.tipoMensagem == "E")
+                            {
+                                //MessageBox.Show(msg.textoMensagem, "Erro: " + msg.codigoMensagem, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
+
+                        }
+                    }
+
+                    // AQUI VOCÊ PODE PEGAR AS INFORMAÇÕES DE RETORNO, PARA GRAVAR EM BANCO, EXIBIR NA TELA, ETC...
+                    var campo1 = objReturn.registroANCINEExibidor;
+                    var campo2 = objReturn.registroANCINESala;
+                    var campo3 = objReturn.diaCinematografico;
+                    var campo4 = objReturn.numeroProtocolo;
+                    var campo5 = objReturn.statusProtocolo;
+
+                    ViewBag.registroANCINEExibidor = campo1;
+                    ViewBag.registroANCINESala = campo2;
+                    ViewBag.diaCinematografico = campo3;
+                    ViewBag.numeroProtocolo = campo4;
+                    ViewBag.statusProtocolo = campo5;
+                }
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("Erro ao enviar Bilheteria: \n\n" + ex.Message, "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ViewBag.ex = ex;
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        
+            
+    }
+
+        public ActionResult Create()
+        {
+            ViewBag.FIL_CD_ANCINE = new SelectList(db.TB_FILME, "FIL_CD_ANCINE", "FIL_NM");
+            ViewBag.EMP_CD_ANCINE = new SelectList(db.TB_EMPRESA_COMPLEXO, "EMP_CD_ANCINE", "EMP_NM_FANT");
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Create(FormCollection collection)
+        {
+            try
+            {
+                var objBil = new TB_BILHETERIA();
+                var objSess = new TB_SESSAO_ANCINE();
+                var objTotCat = new TB_TOT_CATEG_ING();
+                var objTotCat2 = new TB_TOT_CATEG_ING();
+                var objTotCat3 = new TB_TOT_CATEG_ING();
+                var objTotCat4 = new TB_TOT_CATEG_ING();
+                var objTotMod = new TB_TOT_MOD_PAGTO();
+                var objTotTpAss = new TB_TOT_TP_ASSENTO();
+                var objTotTpAss2 = new TB_TOT_TP_ASSENTO();
+
+                string[] stringSeparators = new string[] { "," };
+
+                string strTCI_QTD_ESPECT_AUX = "";
+                string strTMP_VLR_ARR_TRAD_AUX = "";
+                string strTMP_VLR_ARR_VC_AUX = "";
+                string strTMP_VLR_ARR_OUT_AUX = "";
+
+                string[] strTCI_QTD_ESPECT;
+                string[] strTMP_VLR_ARR_TRAD;
+                string[] strTMP_VLR_ARR_VC;
+                string[] strTMP_VLR_ARR_OUT;
+                
+
+                foreach (var key in collection.AllKeys)
+                {
+                    var value = collection[key];
+
+                    //.......TB_BILHETERIA........//
+                    if (key == "BIL_DIA_CIN") { objBil.BIL_DIA_CIN = Convert.ToDateTime(value); }
+                    if (key == "EMP_CD_ANCINE") { objBil.EMP_CD_ANCINE = value; }
+                    if (key == "SAL_CD_ANCINE") { objBil.SAL_CD_ANCINE = value; }
+                    if (key == "BIL_HOUVE_SES") { objBil.BIL_HOUVE_SES = value; }
+                    if (key == "BIL_RETIF") { objBil.BIL_RETIF = value; }
+
+                    //..........TB_SESSAO.........//
+                    if (key == "SAL_CD_ANCINE") { objSess.SAL_CD_ANCINE = value; }
+                    if (key == "FIL_CD_ANCINE") { objSess.FIL_CD_ANCINE = value; }
+                    if (key == "SEA_DT_HR_INICIO") { objSess.SEA_DT_HR_INICIO = Convert.ToDateTime(value); }
+                    if (key == "SEA_MODAL") { objSess.SEA_MODAL = value; }
+                    if (key == "SEA_FIL_TP_TELA") { objSess.SEA_FIL_TP_TELA = value; }
+                    if (key == "SEA_FIL_DIGITAL") { objSess.SEA_FIL_DIGITAL = value; }
+                    if (key == "SEA_FIL_TP_PROJECAO") { objSess.SEA_FIL_TP_PROJECAO = value; }
+                    if (key == "SEA_FIL_AUDIO") { objSess.SEA_FIL_AUDIO = value; }
+                    if (key == "SEA_FIL_LEG") { objSess.SEA_FIL_LEG = value; }
+                    if (key == "SEA_FIL_PRO_LIBRA") { objSess.SEA_FIL_PRO_LIBRA = value; }
+                    if (key == "SEA_FIL_LEG_DESC_CC") { objSess.SEA_FIL_LEG_DESC_CC = value; }
+                    if (key == "SEA_FIL_AUDIO_DESC") { objSess.SEA_FIL_AUDIO_DESC = value; }
+                    // SEA_DIS_CNPJ
+                    // SEA_DIS_NM
+                    if (key == "VRE_CNPJ") {
+                        objSess.SEA_VRE_CNPJ = Convert.ToUInt32("1");
+                    }
+                    // SEA_RZ_SOCIAL
+
+                    //..........
+                    //if (key == "SEA_FIL_AUDIO_DESC") {  = value; }
+
+                    //............TB_TOT_CATEG_ING...........//
+                    //if (key == "TCI_QTD_ESPECT") { strTCI_QTD_ESPECT = value.Split(stringSeparators, StringSplitOptions.None); }
+                    if (key == "TCI_QTD_ESPECT") { strTCI_QTD_ESPECT_AUX = value; }
+                    if (key == "TMP_VLR_ARR_TRAD") { strTMP_VLR_ARR_TRAD_AUX = value; }
+                    if (key == "TMP_VLR_ARR_VC") { strTMP_VLR_ARR_VC_AUX = value; }
+                    if (key == "TMP_VLR_ARR_OUT") { strTMP_VLR_ARR_OUT_AUX = value; }
+                }
+
+                //.......TB_BILHETERIA...........//
+                    objBil.BIL_ADIMP_SALA = "";
+                    objBil.BIL_PROT = "";
+
+                    db.TB_BILHETERIA.Add(objBil);
+                    db.SaveChanges();
+
+                //...........TB_SESSAO_ANCINE.........../
+                    objSess.SEA_FIL_NM = "";
+                    objSess.SEA_DIS_CNPJ = 0;
+                    objSess.SEA_DIS_NM = "";
+                    objSess.SEA_FIL_NM = "";
+                    objSess.SEA_RZ_SOCIAL = "";
+                    objSess.BIL_ID = objBil.BIL_ID;
+
+                    db.TB_SESSAO_ANCINE.Add(objSess);
+                    db.SaveChanges();
+
+
+                strTCI_QTD_ESPECT = strTCI_QTD_ESPECT_AUX.Split(stringSeparators, StringSplitOptions.None);
+                strTMP_VLR_ARR_TRAD = strTMP_VLR_ARR_TRAD_AUX.Split(stringSeparators, StringSplitOptions.None);
+                strTMP_VLR_ARR_VC = strTMP_VLR_ARR_VC_AUX.Split(stringSeparators, StringSplitOptions.None);
+                strTMP_VLR_ARR_OUT = strTMP_VLR_ARR_OUT_AUX.Split(stringSeparators, StringSplitOptions.None);
+
+                //......TB_TOT_TP_ASSENTO........//
+                // LUGARES PADRÃO.
+                objTotTpAss.SEA_ID = objSess.SEA_ID;
+                    objTotTpAss.TTA_TP_ASSENTO = "P";
+                    objTotTpAss.TTA_QTD_DISP = 200;
+
+                    db.TB_TOT_TP_ASSENTO.Add(objTotTpAss);
+                    db.SaveChanges();
+
+                    //.........TB_TOT_CATEG_ING..........//
+                    objTotCat.TTA_ID = objTotTpAss.TTA_ID;
+
+                    // TOTAIS CATEGORIA INTEIRA
+                    objTotCat.TCI_CAT = 1;
+                    objTotCat.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[0]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat);
+                    db.SaveChanges();
+
+                        objTotMod.TCI_ID = objTotCat.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[0]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[0]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[0]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                // TOTAIS CATEGORIA MEIA-ENTRADA
+                    objTotCat2.TTA_ID = objTotTpAss.TTA_ID;
+                    objTotCat2.TCI_CAT = 2;
+                    objTotCat2.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[1]);
+                    
+                    db.TB_TOT_CATEG_ING.Add(objTotCat2);
+                    db.SaveChanges();
+
+                    objTotMod.TCI_ID = objTotCat2.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[1]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[1]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[1]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+
+                    // TOTAIS CATEGORIA PROMOCIONAL
+                    objTotCat3.TTA_ID = objTotTpAss.TTA_ID;
+                    objTotCat3.TCI_CAT = 3;
+                    objTotCat3.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[2]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat3);
+                    db.SaveChanges();
+
+                    objTotMod.TCI_ID = objTotCat3.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[2]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[2]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[2]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+
+                    // TOTAIS CATEGORIA CORTESIAS
+                    objTotCat4.TTA_ID = objTotTpAss.TTA_ID;
+                    objTotCat4.TCI_CAT = 4;
+                    objTotCat4.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[3]);
+                    objTotCat4.TCI_ID = 0;
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat4);
+                    db.SaveChanges();
+
+                //**************************************************************************************************
+                //......TB_TOT_TP_ASSENTO........//
+                // LUGARES ESPECIAIS.
+                objTotTpAss2.SEA_ID = objSess.SEA_ID;
+                objTotTpAss2.TTA_TP_ASSENTO = "E";
+                objTotTpAss2.TTA_QTD_DISP = 4;
+
+                db.TB_TOT_TP_ASSENTO.Add(objTotTpAss2);
+                db.SaveChanges();
+
+                    //.........TB_TOT_CATEG_ING..........//
+                    objTotCat.TTA_ID = objTotTpAss2.TTA_ID;
+
+                    // TOTAIS CATEGORIA INTEIRA
+                    objTotCat.TCI_CAT = 1;
+                    objTotCat.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[4]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat);
+                    db.SaveChanges();
+
+                    objTotMod.TCI_ID = objTotCat.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[3]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[3]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[3]);
+
+                    db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                    db.SaveChanges();
+
+                    // TOTAIS CATEGORIA MEIA-ENTRADA
+                    objTotCat2.TTA_ID = objTotTpAss2.TTA_ID;
+                    objTotCat2.TCI_CAT = 2;
+                    objTotCat2.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[5]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat2);
+                    db.SaveChanges();
+
+                    objTotMod.TCI_ID = objTotCat2.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[4]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[4]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[4]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+
+                // TOTAIS CATEGORIA PROMOCIONAL
+                    objTotCat3.TTA_ID = objTotTpAss2.TTA_ID;
+                    objTotCat3.TCI_CAT = 3;
+                    objTotCat3.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[6]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat3);
+                    db.SaveChanges();
+
+                    objTotMod.TCI_ID = objTotCat3.TCI_ID;
+
+                        // TOTAL MODALIDADE DE PAGTO.
+                        // MEIO TRADICIONAL
+                        objTotMod.TMP_MOD_PAG = 1;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_TRAD[5]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // VALE CULTURA
+                        objTotMod.TMP_MOD_PAG = 2;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_VC[5]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+                        // OUTROS
+                        objTotMod.TMP_MOD_PAG = 3;
+                        //objTotMod.TCI_ID = objTotCat.TCI_ID;
+                        objTotMod.TMP_VLR_ARR = Convert.ToInt16(strTMP_VLR_ARR_OUT[5]);
+
+                        db.TB_TOT_MOD_PAGTO.Add(objTotMod);
+                        db.SaveChanges();
+
+
+                // TOTAIS CATEGORIA CORTESIAS
+                    objTotCat4.TTA_ID = objTotTpAss2.TTA_ID;
+                    objTotCat4.TCI_CAT = 4;
+                    objTotCat4.TCI_QTD_ESPECT = Convert.ToInt16(strTCI_QTD_ESPECT[7]);
+
+                    db.TB_TOT_CATEG_ING.Add(objTotCat4);
+                    db.SaveChanges();
+
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                ViewBag.FIL_CD_ANCINE = new SelectList(db.TB_FILME, "FIL_CD_ANCINE", "FIL_NM");
+                ViewBag.EMP_CD_ANCINE = new SelectList(db.TB_EMPRESA_COMPLEXO, "EMP_CD_ANCINE", "EMP_NM_FANT");
+                return View();
+            }
+        }
+
+        public ActionResult Edit(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add update logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult Delete(int id)
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id, FormCollection collection)
+        {
+            try
+            {
+                // TODO: Add delete logic here
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+    }
+}

@@ -1,0 +1,114 @@
+﻿@model TicketMidia.Models.TB_SALA
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TB_SALA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_NUM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_NUM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DESC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DESC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_QTD_LUG_PDR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_QTD_LUG_PDR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_QTD_LUG_ESP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_QTD_LUG_ESP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_SERIAL_PROJETOR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_SERIAL_PROJETOR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_CD_AUX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_CD_AUX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_INC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_INC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_ALT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_ALT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_DES)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_DES)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_MOT_DES)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_MOT_DES)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_SOM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_SOM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TB_EMPRESA_COMPLEXO.EMP_RZ_SOCIAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TB_EMPRESA_COMPLEXO.EMP_RZ_SOCIAL)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.SAL_CD_ANCINE }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,120 @@
+﻿@model TicketMidia.Models.TB_SALA
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>TB_SALA</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_NUM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_NUM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DESC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DESC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_QTD_LUG_PDR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_QTD_LUG_PDR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_QTD_LUG_ESP)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_QTD_LUG_ESP)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_SERIAL_PROJETOR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_SERIAL_PROJETOR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_CD_AUX)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_CD_AUX)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_INC)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_INC)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_ALT)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_ALT)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_DT_DES)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_DT_DES)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_MOT_DES)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_MOT_DES)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SAL_SOM)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SAL_SOM)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TB_EMPRESA_COMPLEXO.EMP_RZ_SOCIAL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TB_EMPRESA_COMPLEXO.EMP_RZ_SOCIAL)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

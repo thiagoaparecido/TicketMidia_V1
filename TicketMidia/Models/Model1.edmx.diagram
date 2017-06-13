@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c125bcf4ebcf4ed0a226710895da1e1d" Name="Diagram1">
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_BILHETERIA" Width="1.5" PointX="5.375" PointY="9.375" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_DISTRIBUIDORA" Width="1.5" PointX="6.125" PointY="17.25" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_EMPRESA_COMPLEXO" Width="1.5" PointX="6.625" PointY="4.5" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_FILME" Width="1.5" PointX="8.375" PointY="16" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_FUNCAO" Width="1.5" PointX="0.5" PointY="7.625" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_GRP_CIN" Width="1.5" PointX="2.875" PointY="16.625" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_INGRESSO_TIPO" Width="1.5" PointX="13.625" PointY="0.5" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_MENSAGEM_ANCINE" Width="1.5" PointX="10.625" PointY="8.875" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_MODULO" Width="1.5" PointX="0.5" PointY="5.625" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_PERFIL_ACESSO" Width="1.5" PointX="0.5" PointY="0.5" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_PROGRAMA" Width="1.5" PointX="8.375" PointY="7.875" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_SALA" Width="1.5" PointX="3" PointY="4.125" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_SESSAO_ANCINE" Width="1.5" PointX="10.625" PointY="13.625" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_TOT_CATEG_ING" Width="1.5" PointX="15.125" PointY="15.375" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_TOT_MOD_PAGTO" Width="1.5" PointX="17.375" PointY="15.5" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_TOT_TP_ASSENTO" Width="1.5" PointX="12.875" PointY="15.375" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_USUARIO" Width="1.5" PointX="0.5" PointY="2.375" />
+        <EntityTypeShape EntityType="TicketMidiaModel.TB_VENDEDOR_REMOTO" Width="1.5" PointX="2.875" PointY="19.875" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__EMP_C__36B12243" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__EMP_C__37A5467C" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__EMP_C__38996AB5" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__SAL_C__398D8EEE" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__SAL_C__3A81B327" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_BILHET__SAL_C__3B75D760" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_MENSAG__BIL_I__3F466844" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_SESSAO__BIL_I__45F365D3" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_FILME__DIS_CN__3C69FB99" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_GRP_CI__EMP_C__3E52440B" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_PROGRA__EMP_C__4222D4EF" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_SALA__EMP_CD___44FF419A" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_VENDED__EMP_C__4D94879B" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_PROGRA__FIL_C__4316F928" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_SESSAO__FIL_C__46E78A0C" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_FUNCAO__MOD_C__3D5E1FD2" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_MENSAG__SAL_C__403A8C7D" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_MENSAG__SEA_I__412EB0B6" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_PROGRA__SAL_C__440B1D61" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_SESSAO__SAL_C__47DBAE45" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_TOT_TP__SEA_I__4AB81AF0" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_TOT_CA__TTA_I__48CFD27E" />
+        <AssociationConnector Association="TicketMidiaModel.FK__TB_TOT_MO__TCI_I__49C3F6B7" />
+        <AssociationConnector Association="TicketMidiaModel.TB_USUARIO_PERFIL" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

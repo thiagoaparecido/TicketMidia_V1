@@ -1,0 +1,42 @@
+﻿@model TicketMidia.Models.TB_TOT_MOD_PAGTO
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TB_TOT_MOD_PAGTO</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TMP_MOD_PAG)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TMP_MOD_PAG)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TMP_VLR_ARR)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TMP_VLR_ARR)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TB_TOT_CATEG_ING.TCI_ID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TB_TOT_CATEG_ING.TCI_ID)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TMP_ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

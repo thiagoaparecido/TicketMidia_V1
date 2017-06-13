@@ -1,0 +1,135 @@
+﻿@model IEnumerable<TicketMidia.Models.TB_SESSAO_ANCINE>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_DT_HR_INICIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_MODAL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_NM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_TP_TELA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_DIGITAL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_TP_PROJECAO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_AUDIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_LEG)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_PRO_LIBRA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_LEG_DESC_CC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_FIL_AUDIO_DESC)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_DIS_CNPJ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_DIS_NM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_VRE_CNPJ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SEA_RZ_SOCIAL)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TB_BILHETERIA.EMP_CD_ANCINE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TB_FILME.FIL_NM)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TB_SALA.EMP_CD_ANCINE)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_DT_HR_INICIO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_MODAL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_NM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_TP_TELA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_DIGITAL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_TP_PROJECAO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_AUDIO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_LEG)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_PRO_LIBRA)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_LEG_DESC_CC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_FIL_AUDIO_DESC)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_DIS_CNPJ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_DIS_NM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_VRE_CNPJ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SEA_RZ_SOCIAL)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TB_BILHETERIA.EMP_CD_ANCINE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TB_FILME.FIL_NM)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TB_SALA.EMP_CD_ANCINE)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.SEA_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.SEA_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.SEA_ID })
+        </td>
+    </tr>
+}
+
+</table>

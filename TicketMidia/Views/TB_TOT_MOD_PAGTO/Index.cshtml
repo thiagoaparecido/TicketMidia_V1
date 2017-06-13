@@ -1,0 +1,45 @@
+﻿@model IEnumerable<TicketMidia.Models.TB_TOT_MOD_PAGTO>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TMP_MOD_PAG)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TMP_VLR_ARR)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TB_TOT_CATEG_ING.TCI_ID)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.TMP_MOD_PAG)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TMP_VLR_ARR)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TB_TOT_CATEG_ING.TCI_ID)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.TMP_ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.TMP_ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.TMP_ID })
+        </td>
+    </tr>
+}
+
+</table>
